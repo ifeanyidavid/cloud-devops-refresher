@@ -1,7 +1,7 @@
 version: 2.1
 
 executors:
-  nodejs-exectuor:
+  nodejs-executor:
     docker:
       - image: circleci/node:13.8.0
     working_directory: /hom/circleci/project
@@ -130,4 +130,12 @@ workflows:
       - test-backend:
           requires:
             - "build-backend"
+      - scan-frontend:
+          requires:
+            - "build-frontend"
+      - scan-backend:
+          requires:
+            - "build-backend"
+        
+      
         
