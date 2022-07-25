@@ -12,6 +12,7 @@ jobs:
           name: Build front-end
           command: |
             cd frontend
+            rm -rf package-lock.json
             npm install
             npm run build
       - save_cache:
@@ -30,6 +31,7 @@ jobs:
           name: Build front-end
           command: |
             cd backend
+            rm -rf package-lock.json
             npm install
             npm run build
       - save_cache:
