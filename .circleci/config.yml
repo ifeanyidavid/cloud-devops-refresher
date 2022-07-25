@@ -1,10 +1,25 @@
 version: 2.1
 
+orbs: 
+  slack: circleci/slack@4.10.1
+
 executors:
   nodejs-executor:
     docker:
       - image: circleci/node:13.8.0
     working_directory: /home/circleci/project
+
+commands:
+  slack-notify-fail:
+    steps:
+      - slack/notify:
+          event: fail
+          mentions: '@davidkalu14'
+          template: basic_fail_1
+    slack-notify-success:
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 
 jobs:
   build-frontend:
@@ -36,7 +51,6 @@ jobs:
           name: Build back-end
           command: |
             cd backend
-            rm -rf package-lock.json
             npm install
             npm run build
       - save_cache:
@@ -57,6 +71,10 @@ jobs:
             cd frontend
             npm install
             npm run test
+      - run:
+          command: slack-notify-fail
+      - run:
+          command: slack-notify-success
       - save_cache:
           paths:
             - "frontend/node_modules"
@@ -75,6 +93,10 @@ jobs:
             cd backend
             npm install
             npm run test
+      - run:
+          command: slack-notify-fail
+      - run:
+          command: slack-notify-success
       - save_cache:
           paths:
             - "backend/node_modules"
@@ -94,6 +116,10 @@ jobs:
             npm install
             npm audit fix --force
             npm audit --audit-level=critical
+      - run:
+          command: slack-notify-fail
+      - run:
+          command: slack-notify-success
       - save_cache:
           paths:
             - "frontend/node_modules"
@@ -113,6 +139,11 @@ jobs:
             npm install
             npm audit fix --force
             npm audit --audit-level=critical
+            exit 0
+      - run:
+          command: slack-notify-fail
+      - run:
+          command: slack-notify-success
       - save_cache:
           paths:
             - "backend/node_modules"
