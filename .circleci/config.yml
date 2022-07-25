@@ -4,7 +4,7 @@ executors:
   nodejs-executor:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: /hom/circleci/project
+    working_directory: /home/circleci/project
 
 jobs:
   build-frontend:
