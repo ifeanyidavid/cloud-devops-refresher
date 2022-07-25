@@ -1,9 +1,15 @@
 version: 2.1
 
-jobs:
-  build-frontend:
+executors:
+  nodejs-exectuor:
     docker:
       - image: circleci/node:13.8.0
+    working_directory: /hom/circleci/project
+
+jobs:
+  build-frontend:
+    executor: nodejs-executor
+    resource_class: medium
     steps:
       - checkout
       - restore_cache:
@@ -20,8 +26,8 @@ jobs:
           key: frontend-build
   
   build-backend:
-    docker:
-      - image: circleci/node:13.8.0
+    executor: nodejs-executor
+    resource_class: medium
     steps:
       - checkout
       - restore_cache:
@@ -38,8 +44,8 @@ jobs:
           key: backend-build
 
   test-frontend:
-    docker:
-      - image: circleci/node:13.8.0
+    executor: nodejs-executor
+    resource_class: medium
     steps:
       - checkout
       - restore_cache:
@@ -56,8 +62,8 @@ jobs:
           key: frontend-test
 
   test-backend:
-    docker:
-      - image: circleci/node:13.8.0
+    executor: nodejs-executor
+    resource_class: medium
     steps:
       - checkout
       - restore_cache:
@@ -72,6 +78,44 @@ jobs:
           paths:
             - "backend/node_modules"
           key: backend-test
+
+  scan-frontend:
+    executor: nodejs-executor
+    resource_class: medium
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [scan-frontend]
+      - run:
+          name: Scan frontend
+          command: |
+            cd frontend
+            npm install
+            npm audit --audit-level=critical
+      - save_cache:
+          paths:
+            - "frontend/node_modules"
+          key: scan-frontend
+
+  scan-backend:
+    executor: nodejs-executor
+    resource_class: medium
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [scan-backend]
+      - run:
+          name: Scan backend
+          command: |
+            cd backend
+            npm install
+            npm audit --audit-level=critical
+      - save_cache:
+          paths:
+            - "backend/node_modules"
+          key: scan-backend
+
+
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
