@@ -36,6 +36,8 @@ jobs:
             cd frontend
             npm install
             npm run build
+      - slack-notify-fail
+      - slack-notify-success
       - save_cache:
           paths: 
             - 'frontend/node_modules'
@@ -72,10 +74,8 @@ jobs:
             cd frontend
             npm install
             npm run test
-      - run:
-          command: slack-notify-fail
-      - run:
-          command: slack-notify-success
+      - slack-notify-fail
+      - slack-notify-success
       - save_cache:
           paths:
             - "frontend/node_modules"
@@ -94,10 +94,8 @@ jobs:
             cd backend
             npm install
             npm run test
-      - run:
-          command: slack-notify-fail
-      - run:
-          command: slack-notify-success
+      - slack-notify-fail
+      - slack-notify-success
       - save_cache:
           paths:
             - "backend/node_modules"
@@ -117,10 +115,8 @@ jobs:
             npm install
             npm audit fix --force
             npm audit --audit-level=critical
-      - run:
-          command: slack-notify-fail
-      - run:
-          command: slack-notify-success
+      - slack-notify-fail
+      - slack-notify-success
       - save_cache:
           paths:
             - "frontend/node_modules"
@@ -141,10 +137,8 @@ jobs:
             npm audit fix --force
             npm audit --audit-level=critical
             exit 0
-      - run:
-          command: slack-notify-fail
-      - run:
-          command: slack-notify-success
+      - slack-notify-fail
+      - slack-notify-success
       - save_cache:
           paths:
             - "backend/node_modules"
