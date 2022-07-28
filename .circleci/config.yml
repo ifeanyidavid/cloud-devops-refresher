@@ -52,8 +52,6 @@ jobs:
             cd frontend
             npm install
             npm run build
-      - slack-notify-fail
-      - slack-notify-success
       - save_cache:
           paths: 
             - 'frontend/node_modules'
@@ -90,8 +88,6 @@ jobs:
             cd frontend
             npm install
             npm run test
-      - slack-notify-fail
-      - slack-notify-success
       - save_cache:
           paths:
             - "frontend/node_modules"
@@ -110,8 +106,6 @@ jobs:
             cd backend
             npm install
             npm run test
-      - slack-notify-fail
-      - slack-notify-success
       - save_cache:
           paths:
             - "backend/node_modules"
@@ -150,9 +144,8 @@ jobs:
           command: |
             cd backend
             npm install
-            npm audit fix --force
+            npm audit fix
             npm audit --audit-level=critical
-            exit 0
       - slack-notify-fail
       - slack-notify-success
       - save_cache:
@@ -211,6 +204,11 @@ workflows:
       - scan-backend:
           requires:
             - "build-backend"
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [test-feature-branch]
         
       
         
