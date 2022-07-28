@@ -204,7 +204,7 @@ jobs:
           command: |
             ls ~/project/.circleci
             ls ~/project/.circleci/ansible
-            cat inventory.txt
+            cat ~/project/.circleci/ansible/inventory.txt
       - run:
           name: Install dependencies
           command: |
