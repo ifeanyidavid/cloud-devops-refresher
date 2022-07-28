@@ -197,7 +197,7 @@ jobs:
           fingerprints: 
             - "16:d3:1a:8b:6a:2b:14:6b:0d:2e:71:d6:11:0e:49:07"
       - attach_workspace:
-          at: ~/project/.circleci/ansible/
+          at: ~/
       - run:
           name: "Logging"
           command: |
@@ -214,7 +214,7 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
-            ansible-playbook -i inventory.txt configure-server.yml
+            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt configure-server.yml
       - destroy-environments:
           workflowID: "${CIRCLE_WORKFLOW_ID:0:7}"
 
