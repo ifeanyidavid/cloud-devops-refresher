@@ -1,0 +1,25 @@
+---
+  - name: "Update packages"
+    become: true
+    apt:
+      update_cache: yes
+  
+  - name: "upgrade package"
+    become: true
+    apt:
+      upgrade: yes
+  
+  - name: "Installing python, nodejs and npm"
+    become: true
+    apt:
+      name: ["python", "nodejs", "npm"]
+  
+  - name: "Install pm2"
+    become: true
+    npm:
+      name: "pm2"
+      state: present
+      global: true
+      production: yes
+
+  

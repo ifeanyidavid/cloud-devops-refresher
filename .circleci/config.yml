@@ -12,6 +12,10 @@ executors:
     docker:
       - image: cimg/aws:2022.06
     working_directory: /home/circleci/project
+  py3-executor:
+    docker:
+      - image: cimg/python:3.7.9-node
+    working_directory: /home/circleci/project
 
 commands:
   destroy-environments:
@@ -176,11 +180,36 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=udapeople" --output text >> inventory.txt
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=udapeople" --output text >> ~/project/.circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory.txt
+            - project/.circleci/ansible/
+            - inventory.txt
+      - destroy-environments:
+          workflowID: "${CIRCLE_WORKFLOW_ID:0:7}"
+
+  configure-infrastructure:
+    executor: py3-executor
+    resource_class: small
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: 
+            - "16:d3:1a:8b:6a:2b:14:6b:0d:2e:71:d6:11:0e:49:07"
+      - attach_workspace:
+          at: ~/project/.circleci/ansible/
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get -y install gzip tar awscli ansible
+            ansible --version
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environments:
           workflowID: "${CIRCLE_WORKFLOW_ID:0:7}"
 
@@ -209,6 +238,9 @@ workflows:
           # filters:
           #   branches:
           #     only: [test-feature-branch]
+      - configure-infrastructure:
+          requires:
+            - "deploy-infrastructure"
         
       
         
