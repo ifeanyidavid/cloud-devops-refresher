@@ -14,7 +14,7 @@ executors:
     working_directory: /home/circleci/project
   py3-executor:
     docker:
-      - image: cimg/python:3.7.9-node
+      - image: cimg/python:3.10.6
     working_directory: /home/circleci/project
 
 commands:
@@ -149,7 +149,7 @@ jobs:
             cd backend
             npm install
             # npm audit --audit-level=critical
-            npm audit fix --force
+            npm audit fix --audit-level=critical --force
       - slack-notify-fail
       - slack-notify-success
       - save_cache:
@@ -194,8 +194,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: 
-            - "16:d3:1a:8b:6a:2b:14:6b:0d:2e:71:d6:11:0e:49:07"
+          fingerprints: ["16:d3:1a:8b:6a:2b:14:6b:0d:2e:71:d6:11:0e:49:07"]
       - attach_workspace:
           at: ~/
       - run:
