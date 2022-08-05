@@ -12,7 +12,7 @@
   - name: "Installing python, nodejs and npm"
     become: true
     apt:
-      name: ["python", "nodejs", "npm"]
+      name: ["python3", "nodejs", "npm"]
   
   - name: "Install pm2"
     become: true
