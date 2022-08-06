@@ -281,6 +281,7 @@ jobs:
             npm run build
             cd ..
             tar -C backend -czvf artifact.tar.gz .
+            ls
             cd .circleci/ansible
             echo "Contents of the inventory file is -----"
             cat inventory
@@ -319,6 +320,9 @@ workflows:
           requires:
             - "configure-infrastructure"
       - deploy-frontend:
+          requires:
+            - "run-migrations"
+      - deploy-backend:
           requires:
             - "run-migrations"
         
