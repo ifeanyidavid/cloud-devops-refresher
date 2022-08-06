@@ -213,8 +213,7 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            pwd
-            ls
+            cd backend
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
@@ -245,6 +244,7 @@ jobs:
             export API_URL="http://${BACKEND_IP}:3030"
             echo API_URL = ${API_URL}"
             echo API_URL = "http://${BACKEND_IP}:3030" >> frontend/.env
+            cat frontend/.env
       - run:
           name: Deploy frontend objects
           command: |
