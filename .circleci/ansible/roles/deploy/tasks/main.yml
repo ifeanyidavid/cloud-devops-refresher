@@ -1,0 +1,6 @@
+---
+  - name: "Extract the zipped artifact into the EC2 instance"
+    unarchive:
+      remote_src: yes
+      src: ~/project/.circleci/artifact.tar.gz
+      dest: ~/project/.circleci
