@@ -199,14 +199,6 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: "Logging"
-          command: |
-            ls ~/project/.circleci
-            ls ~/project/.circleci/ansible
-            cat ~/project/.circleci/ansible/inventory
-            cd .circleci/ansible
-            cat inventory
-      - run:
           name: Install dependencies
           command: |
             sudo apt-get update
