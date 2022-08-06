@@ -1,6 +1,13 @@
 ---
+  - name: "synchronize backend files"
+    synchronize:
+      src: ../../backend
+      dest: /home/ubuntu
+      recursive: true
+
   - name: "List directory contents"
     shell: |
+      pwd
       ls
       ls /home/
       ls /home/ubuntu/
