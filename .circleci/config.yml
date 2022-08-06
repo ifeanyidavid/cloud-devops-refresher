@@ -221,7 +221,8 @@ jobs:
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-                curl --header "content-length:0" -X POST https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/4t4rtgjw/migration_$\{CIRCLE_WORKFLOW_ID:0:7\}/1%
+                echo "https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/4t4rtgjw/migration_$\{CIRCLE_WORKFLOW_ID:0:7\}/1%"
+                curl --header "content-length:0" -X POST https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/4t4rtgjw/migration_$\{CIRCLE_WORKFLOW_ID:0:7\}/1
             fi
       -  destroy-environments:
           workflowID: "${CIRCLE_WORKFLOW_ID:0:7}"
@@ -242,7 +243,7 @@ jobs:
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=udapeople --output text")
             export API_URL="http://${BACKEND_IP}:3030"
-            echo API_URL = ${API_URL}"
+            echo "API_URL = ${API_URL}"
             echo API_URL = "http://${BACKEND_IP}:3030" >> frontend/.env
             cat frontend/.env
       - run:
