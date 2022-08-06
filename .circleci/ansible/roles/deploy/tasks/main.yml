@@ -1,17 +1,7 @@
 ---
-  - name: "synchronize backend files"
-    synchronize:
-      src: ../../backend
-      dest: /home/ubuntu
-      recursive: true
-
-  - name: "List directory contents"
+  - name: "Print working directory"
     shell: |
       pwd
-      ls
-      ls /home/
-      ls /home/ubuntu/
-      ls /home/ubuntu/backend
 
   - name: "Extract the zipped artifact into the EC2 instance"
     unarchive:
