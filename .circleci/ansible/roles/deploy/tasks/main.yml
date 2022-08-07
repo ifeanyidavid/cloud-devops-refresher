@@ -38,5 +38,5 @@
     shell: |
       ls
       pm2 stop default
-      pm2 start ~/backend/dist/main.js -f
+      pm2 start npm -- start
 
