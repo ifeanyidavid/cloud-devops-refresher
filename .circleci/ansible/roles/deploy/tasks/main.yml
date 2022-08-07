@@ -29,7 +29,7 @@
 
   - name: "Extract the zipped artifact into the EC2 instance"
     unarchive:
-      remote_src: yes
+      remote_src: no
       src: artifact.tar.gz
       dest: ~/backend
 
