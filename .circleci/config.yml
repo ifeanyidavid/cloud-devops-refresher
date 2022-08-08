@@ -288,8 +288,10 @@ jobs:
             cd .circleci/ansible
             echo "Contents of the inventory file is -----"
             cat inventory
+            mkdir ~/project/.circleci/ansible/roles/deploy/files
+            ls ~/project/.circleci/ansible/roles/deploy/
             cp ~/project/artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files
-            ls project/.circleci/ansible/roles/deploy/files
+            ls ~/project/.circleci/ansible/roles/deploy/files
             ansible-playbook -i inventory deploy-backend.yml
       # Here's where you will add some code to rollback on failure
 
