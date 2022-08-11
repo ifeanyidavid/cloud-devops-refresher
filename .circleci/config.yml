@@ -317,11 +317,16 @@ jobs:
           command: |
             node --version
             npm --version
-            sudo apt-get update
-            sudo apt-get -y install curl awscli
+            ls ~
+            ls ~/project
+            ls ~/project/frontend -a
+            # sudo apt-get update
+            # sudo apt-get -y install curl awscli
       - run:
           name: Get backend url
           command: |
+            ls ~
+            ls ~/project
             cat ~/project/frontend/.env
             export BACKEND_IP = ${~/project/frontend/.env}
             export API_URL = "http://${BACKEND_IP}:3030"
