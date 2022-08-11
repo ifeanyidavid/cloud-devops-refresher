@@ -247,7 +247,7 @@ jobs:
             export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters 'Name=tag:project,Values=udapeople' --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
-            echo API_URL = "http://${BACKEND_IP}:3030" >> frontend/.env
+            echo "http://${BACKEND_IP}:3030" >> frontend/.env
             cat frontend/.env
       - run:
           name: Deploy frontend objects
@@ -318,18 +318,15 @@ jobs:
             node --version
             npm --version
             ls ~
-            ls ~/project
-            ls ~/project/frontend -a
-            # sudo apt-get update
-            # sudo apt-get -y install curl awscli
+            ls -a ~/project
+            ls -a ~/project/frontend
+            sudo apt-get update
+            sudo apt-get -y install curl awscli
       - run:
           name: Get backend url
           command: |
-            ls ~
-            ls ~/project
             cat ~/project/frontend/.env
-            export BACKEND_IP = ${~/project/frontend/.env}
-            export API_URL = "http://${BACKEND_IP}:3030"
+            export API_URL = ~/project/frontend/.env
             echo "${API_URL}"
       - run:
           name: Backend smoke test.
