@@ -315,7 +315,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            sudo apt-get curl nodejs npm awscli
+            sudo apt-get update
+            sudo apt-get -y install curl nodejs npm awscli
       - run:
           name: Get backend url
           command: |
