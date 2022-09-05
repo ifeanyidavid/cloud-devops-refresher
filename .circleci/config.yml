@@ -12,7 +12,7 @@ executors:
       - image: amazon/aws-cli
   py3-executor:
     docker:
-      - image: cimg/python:3.10.6
+      - image: python:3.10-alpine3.16
 
 commands:
   destroy-environments:
@@ -58,16 +58,6 @@ commands:
           template: success_tagged_deploy_1
 
 jobs:
-  view-directories:
-    executor: aws-cli-executor
-    steps:
-      - checkout
-      - run:
-          name: View directories
-          command: |
-            pwd
-            ls -al ~/project/.circleci/ansible/
-            cat ~/project/.circleci/ansible/inventory.txt
   build-frontend:
     executor: nodejs-executor
     resource_class: medium
@@ -190,9 +180,6 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            pwd
-            ls -al ~/project/.circleci/ansible/
-            cat ~/project/.circleci/ansible/inventory.txt
             aws ec2 describe-instances --region us-east-1 --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=udapeople" --output text >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
@@ -396,7 +383,6 @@ jobs:
 workflows:
   default:
     jobs:
-      - view-directories
       - build-frontend
       - build-backend
       - test-frontend:
