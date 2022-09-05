@@ -10,7 +10,7 @@ executors:
     working_directory: /home/circleci/project
   aws-cli-executor:
     docker:
-      - image: amazon/aws-cli
+      - image: cimg/aws:2022.06
     working_directory: /home/circleci/project
   py3-executor:
     docker:
@@ -68,7 +68,7 @@ jobs:
           name: View directories
           command: |
             pwd
-            ls ~
+            ls
             ls ~/project
             ls ~/project/.circleci
             ls ~/project/.circleci/ansible/
