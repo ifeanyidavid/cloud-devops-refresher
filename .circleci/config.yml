@@ -61,6 +61,17 @@ commands:
           template: success_tagged_deploy_1
 
 jobs:
+  view-directories:
+    executor: aws-cli-executor
+    steps:
+      - run:
+          name: View directories
+          command: |
+            pwd
+            ls ~
+            ls ~/project
+            ls ~/project/.circleci
+            ls ~/project/.circleci/ansible/
   build-frontend:
     executor: nodejs-executor
     resource_class: medium
@@ -386,39 +397,40 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
-      - build-backend
-      - test-frontend:
-          requires:
-            - "build-frontend"
-      - test-backend:
-          requires:
-            - "build-backend"
-      - scan-frontend:
-          requires:
-            - "build-frontend"
-      - scan-backend:
-          requires:
-            - "build-backend"
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      - view-directories
+      # - build-frontend
+      # - build-backend
+      # - test-frontend:
+      #     requires:
+      #       - "build-frontend"
+      # - test-backend:
+      #     requires:
+      #       - "build-backend"
+      # - scan-frontend:
+      #     requires:
+      #       - "build-frontend"
+      # - scan-backend:
+      #     requires:
+      #       - "build-backend"
+      # - deploy-infrastructure:
+      #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           # filters:
           #   branches:
           #     only: [master]
-      - configure-infrastructure:
-          requires:
-            - "deploy-infrastructure"
-      - run-migrations:
-          requires:
-            - "configure-infrastructure"
-      - deploy-frontend:
-          requires:
-            - "run-migrations"
-      - deploy-backend:
-          requires:
-            - "run-migrations"
-      - smoke-test:
-          requires: [deploy-frontend, deploy-backend]
+      # - configure-infrastructure:
+      #     requires:
+      #       - "deploy-infrastructure"
+      # - run-migrations:
+      #     requires:
+      #       - "configure-infrastructure"
+      # - deploy-frontend:
+      #     requires:
+      #       - "run-migrations"
+      # - deploy-backend:
+      #     requires:
+      #       - "run-migrations"
+      # - smoke-test:
+      #     requires: [deploy-frontend, deploy-backend]
 
         
       
