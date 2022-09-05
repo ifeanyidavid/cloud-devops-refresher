@@ -216,14 +216,15 @@ jobs:
           workflowID: "${CIRCLE_WORKFLOW_ID:0:7}"
   
   run-migrations:
-    executor: nodejs-executor
+    executor: py3-executor
     steps:
       - checkout
       - restore_cache:
           keys: [backend-npm-modules]
       - run:
-          name: Npm Install
+          name: Install dependencies
           command: |
+            apk add --update --no-cache nodejs npm aws-cli curl
             cd backend
             pwd
             ls -al
@@ -343,14 +344,14 @@ jobs:
             echo ${BACKEND_IP}
             export BACKEND=$(echo $BACKEND_IP | grep -o '[^ ]*$')
             echo ${BACKEND}
-            export API_URL="http://${BACKEND}:3030"
-            echo "API_URL=${API_URL}"
+            echo 'export API_URL="http://${BACKEND}:3030"' >> $BASH_ENV
             
             echo "Sleeping for 1 minute"
             sleep 60
       - run:
           name: Backend smoke test.
           command: |
+            echo ${API_URL}
             if curl "${API_URL}/api/status" | grep "ok"
             then
               return 0
