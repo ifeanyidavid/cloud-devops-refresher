@@ -39,9 +39,9 @@ commands:
           when: on_fail
           command: |
               # SUCCESS=$(curl --insecure https://keyvalue.immanuel.co/api/KeyVal/GetValue/4t4rtgjw/<<parameters.workflowID>>)
-              SUCCESS=1
+              SUCCESS = 1
               # Logic for reverting the database state
-              if (( $SUCCESS == 1 ));
+              if (( $SUCCESS==1 ));
               then
                   cd ~/project/backend
                   npm install
@@ -91,7 +91,6 @@ jobs:
             cd backend
             npm install
             npm run build
-            npm run migrations:revert
       - save_cache:
           paths:
             - "backend/node_modules"
