@@ -9,7 +9,7 @@ executors:
       - image: circleci/node:13.8.0
   aws-cli-executor:
     docker:
-      - image: cimg/aws:2022.06
+      - image: amazon/aws-cli
   py3-executor:
     docker:
       - image: cimg/python:3.10.6
