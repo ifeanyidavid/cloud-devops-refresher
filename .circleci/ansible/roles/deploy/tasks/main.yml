@@ -1,0 +1,42 @@
+---
+  - name: "Update packages"
+    become: true
+    apt:
+      update_cache: yes
+  
+  - name: "Upgrade packages"
+    become: true
+    apt:
+      upgrade: yes
+  
+  - name: "Install node and npm"
+    become: true
+    apt:
+      name: ["nodejs", "npm"]
+  
+  - name: "Install pm2"
+    npm:
+      name: "pm2"
+      global: yes
+      production: yes
+      state: present
+    become: true
+
+  - name: "Create backend directory"
+    file:
+      path: ~/backend
+      state: directory
+
+  - name: "Extract the zipped artifact into the EC2 instance"
+    unarchive:
+      remote_src: no
+      src: artifact.tar.gz
+      dest: ~/backend
+
+  - name: "Start app"
+    become: true
+    shell: |
+      ls
+      pm2 stop default
+      pm2 start npm -- start
+
