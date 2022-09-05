@@ -13,30 +13,35 @@
     become: true
     apt:
       name: ["nodejs", "npm"]
+      state: latest
+      update_cache: yes
   
   - name: "Install pm2"
+    become: true
     npm:
       name: "pm2"
       global: yes
       production: yes
       state: present
-    become: true
 
   - name: "Create backend directory"
     file:
-      path: ~/backend
+      path: ~/backend_app
       state: directory
 
   - name: "Extract the zipped artifact into the EC2 instance"
-    unarchive:
-      remote_src: no
-      src: artifact.tar.gz
-      dest: ~/backend
+    become: true
+    copy:
+      src: ~/project/artifact.tar.gz
+      dest: /home/ubuntu/backend_app/artifact.tar.gz
 
   - name: "Start app"
     become: true
     shell: |
-      ls
-      pm2 stop default
+      cd /home/ubuntu/backend_app
+      tar xzvf artifact.tar.gz
+      npm install
+      npm run build
+      pm2 stop all
       pm2 start npm -- start
 
