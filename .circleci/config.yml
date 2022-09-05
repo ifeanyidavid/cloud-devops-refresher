@@ -45,7 +45,7 @@ commands:
               then
                   cd ~/project/backend
                   npm install
-                  npm run migration:revert
+                  npm run migrations:revert
               fi  
   slack-notify-fail:
     steps:
@@ -91,7 +91,7 @@ jobs:
             cd backend
             npm install
             npm run build
-            npm run migration:revert
+            npm run migrations:revert
       - save_cache:
           paths:
             - "backend/node_modules"
