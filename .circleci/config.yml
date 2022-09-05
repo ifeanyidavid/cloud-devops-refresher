@@ -319,11 +319,7 @@ jobs:
             cd .circleci/ansible
             echo "Contents of the inventory file is -----"
             cat inventory.txt
-            # mkdir ~/project/.circleci/ansible/roles/deploy/files
-            # ls ~/project/.circleci/ansible/roles/deploy/
-            # cp ~/project/artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files
-            # ls ~/project/.circleci/ansible/roles/deploy/files
-            ansible-playbook -i inventory deploy-backend.yml
+            ansible-playbook -i inventory.txt deploy-backend.yml
       - destroy-environments:
           workflowID: "${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
