@@ -10,7 +10,7 @@ executors:
     working_directory: /home/circleci/project
   aws-cli-executor:
     docker:
-      - image: cimg/aws:2022.06
+      - image: amazon/aws-cli
     working_directory: /home/circleci/project
   py3-executor:
     docker:
@@ -163,6 +163,7 @@ jobs:
     executor: aws-cli-executor
     steps:
       - checkout
+      - run: yum install tar gzip -y
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -401,9 +402,9 @@ workflows:
             - "build-backend"
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-            branches:
-              only: [master]
+          # filters:
+          #   branches:
+          #     only: [master]
       - configure-infrastructure:
           requires:
             - "deploy-infrastructure"
