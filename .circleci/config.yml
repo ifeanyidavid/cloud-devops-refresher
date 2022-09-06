@@ -482,6 +482,8 @@ workflows:
             - "smoke-test"
       - start-cleanup:
           type: approval
+          requires:
+            - "smoke-test"
       - cleanup:
           requires:
             - "start-cleanup"
