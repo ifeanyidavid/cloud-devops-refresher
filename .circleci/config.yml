@@ -25,7 +25,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws s3 rm "s3://udapeople-${workflowID}" --recursive || true
+            aws s3 rm s3://udapeople-<< parameters.workflowID >> --recursive || true
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflowID >> --region us-east-1
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflowID >> --region us-east-1
   revert-migrations:
@@ -38,15 +38,18 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
+              cd ~/project/backend
+              npm install
+              npm run migrations:revert
               # SUCCESS=$(curl --insecure https://keyvalue.immanuel.co/api/KeyVal/GetValue/4t4rtgjw/<<parameters.workflowID>>)
-              export SUCCESS=1
+              # export SUCCESS=1
               # Logic for reverting the database state
-              if (( $SUCCESS==1 ));
-              then
-                  cd ~/project/backend
-                  npm install
-                  npm run migrations:revert
-              fi  
+              # if (( $SUCCESS==1 ));
+              # then
+              #     cd ~/project/backend
+              #     npm install
+              #     npm run migrations:revert
+              # fi  
   slack-notify-fail:
     steps:
       - slack/notify:
