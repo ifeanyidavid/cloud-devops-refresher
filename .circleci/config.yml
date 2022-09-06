@@ -407,7 +407,6 @@ jobs:
           workflowID: "${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
           workflowID: "${CIRCLE_WORKFLOW_ID:0:7}"
-  
   cleanup:
     executor: aws-cli-executor
     steps:
@@ -481,10 +480,11 @@ workflows:
       - cloudfront-update:
           requires:
             - "smoke-test"
-      - cleanup:
+      - start-cleanup:
           type: approval
+      - cleanup:
           requires:
-            - "smoke-test"
+            - "start-cleanup"
 
         
       
