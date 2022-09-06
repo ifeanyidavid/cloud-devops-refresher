@@ -225,10 +225,6 @@ jobs:
     executor: nodejs-executor
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            sudo apt-get install nodejs awscli curl tar
       - restore_cache:
           keys: [backend-npm-modules]
       - run:
@@ -413,6 +409,10 @@ jobs:
     executor: aws-cli-executor
     steps:
       - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            yum install tar gzip -y
       - attach_workspace:
           at: ~/
       - run:
