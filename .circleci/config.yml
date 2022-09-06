@@ -222,18 +222,11 @@ jobs:
           workflowID: "${CIRCLE_WORKFLOW_ID:0:7}"
   
   run-migrations:
-    executor: py3-executor
+    executor: nodejs-executor
     steps:
       - checkout
       - restore_cache:
           keys: [backend-npm-modules]
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update --no-cache nodejs npm aws-cli curl
-            cd backend
-            pwd
-            ls -al
       - run:
           name: Run migrations
           command: |
