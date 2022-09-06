@@ -41,7 +41,7 @@ commands:
               cd ~/project/backend
               npm install
               npm run migrations:revert
-              # SUCCESS=$(curl --insecure https://keyvalue.immanuel.co/api/KeyVal/GetValue/4t4rtgjw/<<parameters.workflowID>>)
+              # SUCCESS=$(curl --insecure https://kvdb.io/M7krMV8TPHyiYYf3hbn47m/migration_<<parameters.workflowID>>)
               # export SUCCESS=1
               # Logic for reverting the database state
               # if (( $SUCCESS==1 ));
