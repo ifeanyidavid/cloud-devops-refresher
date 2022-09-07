@@ -39,7 +39,8 @@ commands:
           when: on_fail
           command: |
               SUCCESS=$(curl --insecure https://kvdb.io/M7krMV8TPHyiYYf3hbn47m/migration_<<parameters.workflowID>>)
-              Logic for reverting the database state
+              echo $SUCCESS
+              # Logic for reverting the database state
               if (( $SUCCESS==1 ));
               then
                   cd ~/project/backend
@@ -414,14 +415,10 @@ jobs:
       - run:
           name: Get old stack workflow id
           command: |
-            # Fetch the Old workflow ID
             # Fetch the stack names          
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
             --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
             echo Stack names: "${STACKS[@]}"
-            cat ~/project/OldWorkflowID.txt
-            export OldWorkflowID=$(cat ~/project/OldWorkflowID.txt)
-            echo OldWorkflowID "${OldWorkflowID}"
       - run:
           name: Delete old stacks and files
           command: |
