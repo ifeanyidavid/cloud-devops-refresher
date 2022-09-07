@@ -482,13 +482,9 @@ workflows:
       - cloudfront-update:
           requires:
             - "smoke-test"
-      - start-cleanup:
-          type: approval
-          requires:
-            - "cloudfront-update"
       - cleanup:
           requires:
-            - "start-cleanup"
+            - "cloudfront-update"
 
         
       
